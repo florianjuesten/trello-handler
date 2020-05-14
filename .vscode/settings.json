@@ -1,0 +1,11 @@
+{
+  "editor.formatOnSave": false,
+  "prettier.semi": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "[typescript]": {
+    "editor.formatOnSave": true
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
+}
