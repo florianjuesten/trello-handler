@@ -1,5 +1,3 @@
-import { RequestInit, Response } from "node-fetch";
-
 import { CardInfo } from "./types/cardinfo";
 import { Endpoint } from "./types/endpoints";
 import { RequestMethod } from "./types/request.method";
@@ -12,42 +10,37 @@ const fetch = require('node-fetch');
 class TrelloHandler {
   private readonly TRELLO_API_URL: string = "https://api.trello.com/1"
 
-  constructor(private apiKey: string, private apiToken: string) {
-
-  }
+  constructor(private apiKey: string, private apiToken: string) { }
 
   public createCard(cardInfo: CardInfo) {
-    this.makeRequest(Endpoint.Cards, RequestMethod.POST, cardInfo)
+    this.makeRequest(Endpoint.Cards, RequestMethod.POST, "", cardInfo)
   }
 
-  public moveCard() {
-
+  public moveCard(cardId: string, listId: string) {
+    this.makeRequest(Endpoint.Cards, RequestMethod.PUT, "/" + cardId, { idList: listId })
   }
 
-  public sort() {
-
+  public setCardPosition(cardId: string: position: number) {
+    this.makeRequest(Endpoint.Cards, RequestMethod.PUT, "/" + cardId, { pos: position })
   }
 
-  private makeRequest(endpoint: Endpoint, requestMethod: RequestMethod, params: {}) {
-    const authParams = '&key=' + this.apiKey + '&token=' + this.apiToken
-    const urlParams = this.transformParamsToQuery(params)
+  public async getCardsOfList(listId: string): Promise<CardInfo[]> {
+    return await this.makeRequest(Endpoint.Lists, RequestMethod.GET, "/" + listId + "/cards")
+  }
 
-    console.log(this.TRELLO_API_URL + endpoint + authParams + urlParams)
-    fetch(this.TRELLO_API_URL + endpoint + '?' + authParams + urlParams, {
+  private async makeRequest(endpoint: Endpoint, requestMethod: RequestMethod, path: string, params?: {}) {
+    const authParams = '?&key=' + this.apiKey + '&token=' + this.apiToken
+    const urlParams = params ? this.transformParamsToQuery(params) : ""
+
+    const response = await fetch(this.TRELLO_API_URL + endpoint + path + '?' + authParams + urlParams, {
       method: requestMethod,
       headers: {
         'Accept': 'application/json'
       }
 
     })
-      .then((response: Response) => {
-        console.log(
-          `Response: ${response.status} ${response.statusText}`
-        );
-        return response.text();
-      })
-      .then((text: string) => console.log(text))
-      .catch((error: Error) => console.error(error));
+
+    return await response.json()
   }
 
   private transformParamsToQuery(params: {}): string {
@@ -57,6 +50,5 @@ class TrelloHandler {
     return urlParams
   }
 }
-
 
 export const trello = new TrelloHandler(process.env.apiKey, process.env.apiToken)

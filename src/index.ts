@@ -1,32 +1,96 @@
+import * as fs from "fs"
+
+import { getDaysBetween, isBefore, isSameDate, nextDay, specificDay } from "./date.helper";
+
+import { CardInfo } from "./types/cardinfo";
+import { Jobs } from "./types/jobs";
+import { labelMap } from "./maps/label.map";
 import { trello } from "./trello.handler";
 
-const dotenv = require("dotenv")
-const fs = require("fs")
+function createCards(cards: CardInfo[]) {
+  for (let index = 0; index < cards.length; index++) {
+    const createJob = cards[index];
 
-dotenv.config();
+    const jobDueDate: Date = specificDay(createJob.due as number)
+    const jobLabels: string[] = createJob.idLabels.map(nameLabel => labelMap.get(nameLabel))
+
+    trello.createCard(
+      {
+        name: createJob.name,
+        desc: createJob.desc, idList: process.env.waitingListId, due: jobDueDate, idLabels: jobLabels
+      }
+    )
+  }
+}
+
+function relocateCard(card: CardInfo): void {
+  if (!card.due) return
+
+  const today = new Date()
+  const tomorrow = nextDay(new Date())
+  const cardDate = new Date(card.due)
+  if (isBefore(cardDate, today) || isSameDate(cardDate, today)) {
+    trello.moveCard(card.id, process.env.todayListId)
+  }
+  else if (isSameDate(cardDate, tomorrow)) {
+    trello.moveCard(card.id, process.env.tomorrowListId)
+  }
+  else if (getDaysBetween(today, cardDate) < 7) {
+    trello.moveCard(card.id, process.env.thisWeekListId)
+  }
+  else {
+    trello.moveCard(card.id, process.env.waitingListId)
+  }
+}
+
+async function relocateCardsInList(listId: string) {
+  const cards = await trello.getCardsOfList(listId)
+  cards.forEach(card => relocateCard(card))
+}
+
+async function relocateCards() {
+  relocateCardsInList(process.env.todayListId)
+  relocateCardsInList(process.env.tomorrowListId)
+  relocateCardsInList(process.env.thisWeekListId)
+  relocateCardsInList(process.env.waitingListId)
+}
+
+async function orderCardsInList(listId: string) {
+  const cards = await trello.getCardsOfList(listId)
+  cards.sort((cardA: CardInfo, cardB: CardInfo) => {
+    if (!cardA.due) return -1
+    if (!cardB.due) return 1
+
+    const cardADate = new Date(cardA.due)
+    const cardBDate = new Date(cardB.due)
+
+    return cardADate < cardBDate ? -1 : 1
+  })
+
+  for (let index = 0; index < cards.length; index++) {
+    const card = cards[index];
+    trello.setCardPosition(card.id, index)
+  }
+}
+
+async function orderLists() {
+  orderCardsInList(process.env.todayListId)
+  orderCardsInList(process.env.tomorrowListId)
+  orderCardsInList(process.env.thisWeekListId)
+  orderCardsInList(process.env.waitingListId)
+}
 
 
 
-
-trello.createCard({ name: "Class test card", desc: "test desc", idList: process.env.privateTodayListId })
-
-
-
-// fetch('https://api.trello.com/1/cards/CARD_ID/due?key=' + process.env.trelloApiKey + '&token=' + process.env.trelloApiToken + '&value=' + new Date() + '', {
-//   method: 'PUT',
-//   headers: {
-//     'Accept': 'application/json'
-//   }
-// })
-//   .then(response => {
-//     console.log(
-//       `Response: ${response.status} ${response.statusText}`
-//     );
-//     return response.text();
-//   })
-//   .then(text => console.log(text))
-//   .catch(err => console.error(err));
-
-
-//     // array sort
-
+function checkCreatingJobs() {
+  const jobs: Jobs = JSON.parse(fs.readFileSync("trello-jobs.json", "utf8"))
+  if (new Date().getDate() === 1) {
+    createCards(jobs.createMonthly)
+  }
+  if (new Date().getDay() === 1) {
+    createCards(jobs.createWeekly)
+  }
+}
+checkCreatingJobs()
+relocateCards()
+orderLists()
