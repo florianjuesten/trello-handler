@@ -15,9 +15,15 @@
     "@types/node-fetch": "^2.5.7",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
+    "concurrently": "^5.2.0",
     "eslint": "^7.0.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^6.11.0",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "wait-on": "^5.0.0"
+  },
+  "scripts": {
+    "dev": "concurrently \"tsc -w -preserveWatchOutput\" \"wait-on dist/index.js && nodemon dist/index.js\"",
+    "start": "node dist/index.js"
   }
 }

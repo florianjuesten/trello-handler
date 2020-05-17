@@ -1,8 +1,8 @@
 import { RequestInit, Response } from "node-fetch";
 
-import { CardInfo } from "./types/CardInfo";
+import { CardInfo } from "./types/cardinfo";
 import { Endpoint } from "./types/endpoints";
-import { RequestMethod } from "./types/RequestMethod";
+import { RequestMethod } from "./types/request.method";
 
 const dotenv = require("dotenv")
 dotenv.config();
@@ -18,6 +18,14 @@ class TrelloHandler {
 
   public createCard(cardInfo: CardInfo) {
     this.makeRequest(Endpoint.Cards, RequestMethod.POST, cardInfo)
+  }
+
+  public moveCard() {
+
+  }
+
+  public sort() {
+
   }
 
   private makeRequest(endpoint: Endpoint, requestMethod: RequestMethod, params: {}) {

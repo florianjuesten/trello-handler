@@ -106,3 +106,4 @@ dist
 
 bsp/
 *.js
+trello-jobs.json
