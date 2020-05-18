@@ -1,6 +1,9 @@
-import { CardInfo } from "./cardinfo";
+import { CreateCardJob } from "./create.card.job";
 
 export interface Jobs {
-  createMonthly: CardInfo[]
-  createWeekly: CardInfo[]
+  createMonthly: CreateCardJob[]
+  createWeekly: CreateCardJob[]
+  createYearly: CreateCardJob[]
+  orderLists: boolean
+  relocateCards: boolean
 }

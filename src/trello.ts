@@ -1,18 +1,17 @@
-import { CardInfo } from "./types/cardinfo";
+import { Card } from "./types/card";
 import { Endpoint } from "./types/endpoints";
 import { RequestMethod } from "./types/request.method";
+import dotenv from "dotenv";
+import fetch from 'node-fetch';
 
-const dotenv = require("dotenv")
 dotenv.config();
 
-const fetch = require('node-fetch');
-
-class TrelloHandler {
+class Trello {
   private readonly TRELLO_API_URL: string = "https://api.trello.com/1"
 
   constructor(private apiKey: string, private apiToken: string) { }
 
-  public createCard(cardInfo: CardInfo) {
+  public createCard(cardInfo: Card) {
     this.makeRequest(Endpoint.Cards, RequestMethod.POST, "", cardInfo)
   }
 
@@ -20,11 +19,11 @@ class TrelloHandler {
     this.makeRequest(Endpoint.Cards, RequestMethod.PUT, "/" + cardId, { idList: listId })
   }
 
-  public setCardPosition(cardId: string: position: number) {
+  public setCardPosition(cardId: string, position: number) {
     this.makeRequest(Endpoint.Cards, RequestMethod.PUT, "/" + cardId, { pos: position })
   }
 
-  public async getCardsOfList(listId: string): Promise<CardInfo[]> {
+  public async getCardsOfList(listId: string): Promise<Card[]> {
     return await this.makeRequest(Endpoint.Lists, RequestMethod.GET, "/" + listId + "/cards")
   }
 
@@ -37,7 +36,6 @@ class TrelloHandler {
       headers: {
         'Accept': 'application/json'
       }
-
     })
 
     return await response.json()
@@ -51,4 +49,4 @@ class TrelloHandler {
   }
 }
 
-export const trello = new TrelloHandler(process.env.apiKey, process.env.apiToken)
+export const trello = new Trello(process.env.apiKey, process.env.apiToken)

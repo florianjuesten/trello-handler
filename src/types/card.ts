@@ -1,8 +1,8 @@
-export interface CardInfo {
+export interface Card {
   id?: string
   name: string
   desc?: string
   idList: string
-  due?: Date | number
+  due?: Date
   idLabels?: string[]
 }
