@@ -2,8 +2,9 @@ export interface CreateCardJob {
   name: string
   desc?: string
   idList: string
-  dueInDays: number
+  due: number
   hour: number
   minute: number
+  month?: number
   idLabels?: string[]
 }

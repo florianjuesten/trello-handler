@@ -20,6 +20,7 @@ class Trello {
   }
 
   public setCardPosition(cardId: string, position: number) {
+    // console.log(cardId, position)
     this.makeRequest(Endpoint.Cards, RequestMethod.PUT, "/" + cardId, { pos: position })
   }
 

@@ -1,4 +1,4 @@
-import { getDayAfter, getDaysBetween, getSpecificDayOfMonth, isBefore, isSameDay } from "./date.helper";
+import { getDayAfter, getDaysBetween, getSpecificDay, isBefore, isSameDay } from "./date.helper";
 
 import { Card } from "./types/card";
 import { CreateCardJob } from "./types/create.card.job";
@@ -7,12 +7,9 @@ import { trello } from "./trello";
 
 class JobProcessor {
 
-
-
-
   public createCards(createCardJobs: CreateCardJob[]) {
     createCardJobs.forEach((createCardJob) => {
-      const jobcardDueDate: Date = getSpecificDayOfMonth(createCardJob.dueInDays, createCardJob.hour, createCardJob.minute)
+      const jobcardDueDate: Date = getSpecificDay(createCardJob.due, createCardJob.hour, createCardJob.minute, createCardJob.month)
       const jobLabels: string[] = createCardJob.idLabels.map(nameLabel => labelMap.get(nameLabel))
 
       trello.createCard(
@@ -41,8 +38,6 @@ class JobProcessor {
     this.orderCardsInList(process.env.waitingListId)
   }
 
-
-
   private async  relocateCardsInList(listId: string) {
     const cards = await trello.getCardsOfList(listId)
     cards.forEach(card => this.relocateCard(card))
@@ -70,7 +65,15 @@ class JobProcessor {
 
   private async  orderCardsInList(listId: string) {
     const cards = await trello.getCardsOfList(listId)
+    // cards.forEach(card => {
+    //   console.log(card.name, card.id, card.due)
+    // });
+
     cards.sort(this.sortCards)
+
+    // cards.forEach(card => {
+    //   console.log(card.name, card.id, card.due)
+    // });
 
     cards.forEach((card, index) => trello.setCardPosition(card.id, index))
   }

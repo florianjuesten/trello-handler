@@ -22,12 +22,12 @@ export const getDayAfter = (date: Date): Date => {
   return nextDate
 }
 
-export const getSpecificDayOfMonth = (day: number, hours?: number, minutes?: number) => {
+export const getSpecificDay = (differenceInDays: number, hours?: number, minutes?: number, month?: number) => {
   const specificDate = new Date()
-  specificDate.setDate(day)
-
+  specificDate.setDate(specificDate.getDate() + differenceInDays)
   if (hours) specificDate.setHours(hours)
   if (minutes) specificDate.setMinutes(minutes)
+  if (month) specificDate.setMonth(month)
 
   specificDate.setSeconds(0)
   specificDate.setMilliseconds(0)
@@ -35,8 +35,3 @@ export const getSpecificDayOfMonth = (day: number, hours?: number, minutes?: num
   return specificDate
 }
 
-export const getSpecificDayByDayOffset = (differenceInDays: number) => {
-  const specificDate = new Date()
-  specificDate.setDate(specificDate.getDate() + differenceInDays)
-  return specificDate
-}
