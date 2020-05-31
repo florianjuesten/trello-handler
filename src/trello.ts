@@ -11,17 +11,17 @@ class Trello {
 
   constructor(private apiKey: string, private apiToken: string) { }
 
-  public createCard(cardInfo: Card) {
-    this.makeRequest(Endpoint.Cards, RequestMethod.POST, "", cardInfo)
+  public async createCard(cardInfo: Card) {
+    await this.makeRequest(Endpoint.Cards, RequestMethod.POST, "", cardInfo)
   }
 
-  public moveCard(cardId: string, listId: string) {
-    this.makeRequest(Endpoint.Cards, RequestMethod.PUT, "/" + cardId, { idList: listId })
+  public async moveCard(cardId: string, listId: string) {
+    await this.makeRequest(Endpoint.Cards, RequestMethod.PUT, "/" + cardId, { idList: listId })
   }
 
-  public setCardPosition(cardId: string, position: number) {
+  public async setCardPosition(cardId: string, position: number) {
     // console.log(cardId, position)
-    this.makeRequest(Endpoint.Cards, RequestMethod.PUT, "/" + cardId, { pos: position })
+    await this.makeRequest(Endpoint.Cards, RequestMethod.PUT, "/" + cardId, { pos: position })
   }
 
   public async getCardsOfList(listId: string): Promise<Card[]> {
