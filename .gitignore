@@ -107,3 +107,4 @@ dist
 bsp/
 *.js
 trello-jobs.json
+debug-jobs.json
