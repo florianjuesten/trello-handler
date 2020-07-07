@@ -1,5 +1,5 @@
 export enum RequestMethod {
-  PUT = "PUT",
-  POST = "POST",
-  GET = "GET"
+  PUT = 'PUT',
+  POST = 'POST',
+  GET = 'GET'
 }

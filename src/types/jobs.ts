@@ -1,4 +1,4 @@
-import { CreateCardJob } from "./create.card.job";
+import { CreateCardJob } from './create.card.job'
 
 export interface Jobs {
   createMonthly: CreateCardJob[]

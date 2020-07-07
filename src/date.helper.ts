@@ -1,7 +1,7 @@
-export const isBefore = (dateA: Date, dateB: Date): boolean => dateA < dateB;
-export const isAfter = (dateA: Date, dateB: Date): boolean => dateA > dateB;
+export const isBefore = (dateA: Date, dateB: Date): boolean => dateA < dateB
+export const isAfter = (dateA: Date, dateB: Date): boolean => dateA > dateB
 
-export const getDaysBetween = (dateInitial: Date, dateFinal: Date): number => ((dateFinal as unknown as number) - ((dateInitial as unknown) as number)) / (1000 * 3600 * 24)
+export const getDaysBetween = (dateInitial: Date, dateFinal: Date): number => (((dateFinal as unknown) as number) - ((dateInitial as unknown) as number)) / (1000 * 3600 * 24)
 
 export const isSameDay = (dateA: Date, dateB: Date): boolean => {
   if (dateA.getFullYear() !== dateB.getFullYear()) return false
@@ -37,14 +37,14 @@ export const getSpecificDay = (differenceInDays: number, hours?: number, minutes
 
 export const getWeekNumber = (date: Date) => {
   // Copy date so don't modify original
-  date = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  date = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
   // Set to nearest Thursday: current date + 4 - current day number
   // Make Sunday's day number 7
-  date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7));
+  date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7))
   // Get first day of year
-  var yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+  var yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1))
   // Calculate full weeks to nearest Thursday
-  var weekNo = Math.ceil(((((date as unknown as number) - (yearStart as unknown as number)) / 86400000) + 1) / 7);
+  var weekNo = Math.ceil(((((date as unknown) as number) - ((yearStart as unknown) as number)) / 86400000 + 1) / 7)
   // Return array of year and week number
-  return [date.getUTCFullYear(), weekNo];
+  return [date.getUTCFullYear(), weekNo]
 }
