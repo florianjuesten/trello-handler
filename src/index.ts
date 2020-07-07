@@ -22,10 +22,10 @@ async function processJobs() {
     jobProcessor.createCards(jobs.createWeekly)
     await sleep(2000)
 
-    if (getWeekNumber(timeofExecution)[0] % 2 === 1) {
+    if (getWeekNumber(timeofExecution)[1] % 2 === 1) {
       jobProcessor.createCards(jobs.createWeeklyEven)
       await sleep(2000)
-    } else if (getWeekNumber(timeofExecution)[0] % 2 === 0) {
+    } else if (getWeekNumber(timeofExecution)[1] % 2 === 0) {
       jobProcessor.createCards(jobs.createWeeklyOdd)
       await sleep(2000)
     }
