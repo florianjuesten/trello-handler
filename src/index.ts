@@ -18,17 +18,49 @@ async function processJobs() {
   }
 
   const timeofExecution = new Date()
-  if (timeofExecution.getDay() === 0) {
-    jobProcessor.createCards(jobs.createWeekly)
-    await sleep(2000)
 
-    if (getWeekNumber(timeofExecution)[1] % 2 === 1) {
-      jobProcessor.createCards(jobs.createWeeklyEven)
+  switch (timeofExecution.getDay()) {
+    case 0:
+      jobProcessor.createCards(jobs.createSunday)
       await sleep(2000)
-    } else if (getWeekNumber(timeofExecution)[1] % 2 === 0) {
-      jobProcessor.createCards(jobs.createWeeklyOdd)
+
+      jobProcessor.createCards(jobs.createWeekly)
       await sleep(2000)
-    }
+
+      if (getWeekNumber(timeofExecution)[1] % 2 === 1) {
+        jobProcessor.createCards(jobs.createWeeklyEven)
+        await sleep(2000)
+      } else if (getWeekNumber(timeofExecution)[1] % 2 === 0) {
+        jobProcessor.createCards(jobs.createWeeklyOdd)
+        await sleep(2000)
+      }
+      break
+    case 1:
+      jobProcessor.createCards(jobs.createMonday)
+      await sleep(2000)
+      break
+    case 2:
+      jobProcessor.createCards(jobs.createTuesday)
+      await sleep(2000)
+      break
+    case 3:
+      jobProcessor.createCards(jobs.createWednesDay)
+      await sleep(2000)
+      break
+    case 4:
+      jobProcessor.createCards(jobs.createThursday)
+      await sleep(2000)
+      break
+    case 5:
+      jobProcessor.createCards(jobs.createFriday)
+      await sleep(2000)
+      break
+    case 6:
+      jobProcessor.createCards(jobs.createSaturday)
+      await sleep(2000)
+      break
+    default:
+      break
   }
 
   if (timeofExecution.getDate() === 1) {
