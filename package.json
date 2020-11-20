@@ -1,10 +1,11 @@
 {
-  "name": "trello-handler",
+  "name": "trello-automator",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/florianjuesten/trello-handler.git",
+  "repository": "https://github.com/florianjuesten/trello-automator.git",
   "author": "Florian Jüsten <flojuesten@gmail.com>",
   "license": "MIT",
+  "description": "job to automate trello workflows",
   "dependencies": {
     "dotenv": "^8.2.0",
     "node-fetch": "^2.6.0"
@@ -25,6 +26,7 @@
   },
   "scripts": {
     "dev": "concurrently \"tsc -w -preserveWatchOutput\" \"wait-on dist/index.js && NODE_ENV=development nodemon dist/index.js\"",
+    "tsc":"tsc",
     "start": "node dist/index.js"
   }
 }

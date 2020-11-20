@@ -13,12 +13,13 @@ function sleep(milliseconds: number) {
 async function processJobs() {
   let jobs: Jobs = JSON.parse(fs.readFileSync('trello-jobs.json', 'utf8'))
 
-  if (process.env.NODE_ENV === 'development') {
-    jobs = JSON.parse(fs.readFileSync('debug-jobs.json', 'utf8'))
-  }
+  // if (process.env.NODE_ENV === 'development') {
+  //   jobs = JSON.parse(fs.readFileSync('debug-jobs.json', 'utf8'))
+  // }
 
   const timeofExecution = new Date()
 
+  // console.log('timeofExecution.getDay())', timeofExecution.getDay()))
   switch (timeofExecution.getDay()) {
     case 0:
       jobProcessor.createCards(jobs.createSunday)
@@ -55,6 +56,7 @@ async function processJobs() {
       jobProcessor.createCards(jobs.createFriday)
       await sleep(2000)
       break
+
     case 6:
       jobProcessor.createCards(jobs.createSaturday)
       await sleep(2000)
