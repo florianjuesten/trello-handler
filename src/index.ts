@@ -3,6 +3,7 @@ import * as fs from 'fs'
 import { Jobs } from './types/jobs'
 import { getWeekNumber } from './date.helper'
 import { jobProcessor } from './job.processor'
+import { logger } from './logger'
 
 function sleep(milliseconds: number) {
   return new Promise((resolve) => {
@@ -79,4 +80,11 @@ async function processJobs() {
   if (jobs.orderLists) await jobProcessor.orderLists()
 }
 
-processJobs()
+try {
+  logger.info('Starting to process jobs')
+  processJobs()
+  logger.info('Finished trello jobs.')
+} catch (error) {
+  logger.error('An error occured processing the trello jobs.')
+  logger.error(error)
+}
