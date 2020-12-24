@@ -3,22 +3,27 @@ import { getDayAfter, getDaysBetween, getSpecificDay, isBefore, isSameDay } from
 import { Card } from './types/card'
 import { CreateCardJob } from './types/create.card.job'
 import { labelMap } from './maps/label.map'
+import { logger } from './logger'
 import { trello } from './trello'
 
 class JobProcessor {
-  public createCards(createCardJobs: CreateCardJob[]) {
-    createCardJobs.forEach((createCardJob) => {
-      const jobcardDueDate: Date = getSpecificDay(createCardJob.due, createCardJob.hour, createCardJob.minute, createCardJob.month)
-      const jobLabels: string[] = createCardJob.idLabels.map((nameLabel) => labelMap.get(nameLabel))
+  public async createCards(createCardJobs: CreateCardJob[]) {
+    if (await this.isJobCreationNeeded(createCardJobs[0])) {
+      createCardJobs.forEach((createCardJob) => {
+        const jobcardDueDate: Date = getSpecificDay(createCardJob.due, createCardJob.hour, createCardJob.minute, createCardJob.month)
+        const jobLabels: string[] = createCardJob.idLabels.map((nameLabel) => labelMap.get(nameLabel))
 
-      trello.createCard({
-        name: createCardJob.name,
-        desc: createCardJob.desc || '',
-        idList: process.env.waitingListId,
-        due: jobcardDueDate,
-        idLabels: jobLabels
+        trello.createCard({
+          name: createCardJob.name,
+          desc: createCardJob.desc || '',
+          idList: process.env.waitingListId,
+          due: jobcardDueDate,
+          idLabels: jobLabels
+        })
       })
-    })
+    } else {
+      logger.info('No job creation needed.')
+    }
   }
 
   public async relocateCards() {
@@ -80,6 +85,30 @@ class JobProcessor {
     const cardBDate = new Date(cardB.due)
 
     return cardADate < cardBDate ? -1 : 1
+  }
+
+  private async isJobCreationNeeded(createCardJob: CreateCardJob): Promise<boolean> {
+    var creationNeeded = true
+
+    const searchResult = await trello.searchCard(createCardJob.name)
+
+    if (searchResult.cards && searchResult.cards.length > 0) {
+      const createCardDate = getSpecificDay(createCardJob.due, createCardJob.hour, createCardJob.minute, createCardJob.month)
+      searchResult.cards.forEach((searchResultCard: any) => {
+        try {
+          const searchCardDate = new Date(searchResultCard.due)
+          if (!searchResultCard.closed && isSameDay(createCardDate, searchCardDate)) {
+            creationNeeded = false
+          }
+        } catch (error) {
+          logger.error('Could not parse searchresult card')
+          logger.error(error)
+        }
+      })
+    }
+
+    logger.info('Jobreation needed: ' + creationNeeded)
+    return creationNeeded
   }
 }
 

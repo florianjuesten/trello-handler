@@ -20,7 +20,6 @@ class Trello {
   }
 
   public async setCardPosition(cardId: string, position: number) {
-    // console.log(cardId, position)
     await this.makeRequest(Endpoint.Cards, RequestMethod.PUT, '/' + cardId, { pos: position })
   }
 
@@ -28,10 +27,12 @@ class Trello {
     return await this.makeRequest(Endpoint.Lists, RequestMethod.GET, '/' + listId + '/cards')
   }
 
+  public async searchCard(name: string): Promise<any> {
+    return await this.makeRequest(Endpoint.Search, RequestMethod.GET, '', { query: name, card_fields: 'name,due,closed', modelTypes: 'cards' })
+  }
   private async makeRequest(endpoint: Endpoint, requestMethod: RequestMethod, path: string, params?: {}) {
     const authParams = '?&key=' + this.apiKey + '&token=' + this.apiToken
     const urlParams = params ? this.transformParamsToQuery(params) : ''
-
     const response = await fetch(this.TRELLO_API_URL + endpoint + path + '?' + authParams + urlParams, {
       method: requestMethod,
       headers: {
