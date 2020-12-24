@@ -57,7 +57,6 @@ async function processJobs() {
       jobProcessor.createCards(jobs.createFriday)
       await sleep(2000)
       break
-
     case 6:
       jobProcessor.createCards(jobs.createSaturday)
       await sleep(2000)
@@ -67,6 +66,15 @@ async function processJobs() {
   }
 
   if (timeofExecution.getDate() === 1) {
+    if ((timeofExecution.getMonth() + 1) % 3 === 0) {
+      jobProcessor.createCards(jobs.createQuarterly)
+    }
+    if ((timeofExecution.getMonth() + 1) % 2 === 0) {
+      jobProcessor.createCards(jobs.createMonthlyEven)
+    } else {
+      jobProcessor.createCards(jobs.createMonthlyOdd)
+    }
+
     jobProcessor.createCards(jobs.createMonthly)
     await sleep(2000)
   }
