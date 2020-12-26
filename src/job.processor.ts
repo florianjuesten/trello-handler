@@ -8,6 +8,10 @@ import { trello } from './trello'
 
 class JobProcessor {
   public async createCards(createCardJobs: CreateCardJob[]) {
+    if (!createCardJobs[0]) {
+      logger.info('No Jobs to create.')
+      return
+    }
     if (await this.isJobCreationNeeded(createCardJobs[0])) {
       createCardJobs.forEach((createCardJob) => {
         const jobcardDueDate: Date = getSpecificDay(createCardJob.due, createCardJob.hour, createCardJob.minute, createCardJob.month)
@@ -88,6 +92,8 @@ class JobProcessor {
   }
 
   private async isJobCreationNeeded(createCardJob: CreateCardJob): Promise<boolean> {
+    if (!createCardJob) return false
+
     var creationNeeded = true
 
     const searchResult = await trello.searchCard(createCardJob.name)
