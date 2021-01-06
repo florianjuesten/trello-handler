@@ -8,7 +8,7 @@ import { trello } from './trello'
 
 class JobProcessor {
   public async createCards(createCardJobs: CreateCardJob[]) {
-    if (!createCardJobs[0]) {
+    if (!createCardJobs || !createCardJobs[0]) {
       logger.info('No Jobs to create.')
       return
     }

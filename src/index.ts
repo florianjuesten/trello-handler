@@ -52,7 +52,7 @@ async function processJobs() {
       break
     case 3:
       logger.info('Creating wednesday cards.')
-      await jobProcessor.createCards(jobs.createWednesDay)
+      await jobProcessor.createCards(jobs.createWednesday)
       await sleep(2000)
       break
     case 4:

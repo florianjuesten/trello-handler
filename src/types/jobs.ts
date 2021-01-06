@@ -3,7 +3,7 @@ import { CreateCardJob } from './create.card.job'
 export interface Jobs {
   createMonday: CreateCardJob[]
   createTuesday: CreateCardJob[]
-  createWednesDay: CreateCardJob[]
+  createWednesday: CreateCardJob[]
   createThursday: CreateCardJob[]
   createFriday: CreateCardJob[]
   createSaturday: CreateCardJob[]
