@@ -3,5 +3,6 @@ export enum Endpoint {
   Boards = '/boards',
   Lists = '/lists',
   Actions = '/actions',
-  Search = '/search'
+  Search = '/search',
+  CheckLists = '/checklists'
 }

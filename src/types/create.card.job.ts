@@ -6,5 +6,6 @@ export interface CreateCardJob {
   hour: number
   minute: number
   month?: number
-  idLabels?: string[]
+  idLabels?: string[],
+  checklist?: string[]
 }
