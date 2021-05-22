@@ -11,11 +11,14 @@ function transformParamsToQuery(params) {
   return urlParams
 }
 
+const today = new Date()
+
 const authParams = '?&key=' + process.env.apiKey + '&token=' + process.env.apiToken
 const urlParams = transformParamsToQuery({
   name: process.argv[2] || 'name string missing',
   desc: '',
-  idList: process.env.todayListId
+  idList: process.env.todayListId,
+  due:today
 })
 
 const url = 'https://api.trello.com/1/cards' + authParams + urlParams
