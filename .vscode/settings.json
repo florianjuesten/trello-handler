@@ -1,5 +1,6 @@
 {
   "editor.formatOnSave": false,
+  "editor.formatOnSaveMode": "file",
   "prettier.semi": false,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
