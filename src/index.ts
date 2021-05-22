@@ -98,12 +98,12 @@ async function processJobs() {
     await sleep(2000)
   }
 
-  for (let index = 0; index < 3; index++) {
+  for (let index = 0; index < 5; index++) {
     logger.info('Relocating cards')
     if (jobs.relocateCards) await jobProcessor.relocateCards()
     logger.info('Ordering lists')
     if (jobs.orderLists) await jobProcessor.orderLists()
-    sleep(3000)
+    sleep(5000)
   }
 }
 
