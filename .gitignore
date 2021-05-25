@@ -108,3 +108,5 @@ bsp/
 *.js
 trello-jobs.json
 debug-jobs.json
+.env_*
+trello-jobs.json_*

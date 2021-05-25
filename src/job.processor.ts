@@ -46,6 +46,7 @@ class JobProcessor {
 
   private async relocateCardsInList(listId: string) {
     const cards = await trello.getCardsOfList(listId)
+    if (!cards) return
     cards.forEach((card) => this.relocateCard(card))
   }
 
@@ -71,12 +72,14 @@ class JobProcessor {
     // cards.forEach(card => {
     //   console.log(card.name, card.id, card.due)
     // });
-
+    if (!cards || !cards.sort) return
     cards.sort(this.sortCards)
 
     // cards.forEach(card => {
     //   console.log(card.name, card.id, card.due)
     // });
+
+    if (!cards || !cards.forEach) return
 
     cards.forEach((card, index) => trello.setCardPosition(card.id, index))
   }
