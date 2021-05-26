@@ -1,6 +1,7 @@
 import * as fs from 'fs'
 
 import { Jobs } from './types/jobs'
+import YAML from 'yaml'
 import { getWeekNumber } from './date.helper'
 import { jobProcessor } from './job.processor'
 import { logger } from './logger'
@@ -11,8 +12,34 @@ function sleep(milliseconds: number) {
   })
 }
 
+function readJobs() {
+  let jobs: Jobs = null
+  try {
+    jobs = YAML.parse(fs.readFileSync('trello-jobs.yml', 'utf-8'))
+    logger.info('Jobs yml found.')
+  } catch (error) {
+    logger.error('Error parsing jobs yml.')
+  }
+
+  if (!jobs) {
+    try {
+      jobs = JSON.parse(fs.readFileSync('trello-jobs.json', 'utf8'))
+      logger.info('Jobs json found.')
+    } catch (error) {
+      logger.error('Error parsing jobs json.')
+    }
+  }
+
+  return jobs
+}
+
 async function processJobs() {
-  let jobs: Jobs = JSON.parse(fs.readFileSync('trello-jobs.json', 'utf8'))
+  const jobs = readJobs()
+
+  if (!jobs) {
+    logger.info('No jobs found.')
+    return
+  }
 
   // if (process.env.NODE_ENV === 'development') {
   //   jobs = JSON.parse(fs.readFileSync('debug-jobs.json', 'utf8'))

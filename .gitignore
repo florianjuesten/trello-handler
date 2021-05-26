@@ -110,3 +110,5 @@ trello-jobs.json
 debug-jobs.json
 .env_*
 trello-jobs.json_*
+trello-jobs.yml
+trello-jobs.yml_*

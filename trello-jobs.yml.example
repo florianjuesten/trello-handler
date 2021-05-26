@@ -1,0 +1,10 @@
+---
+createWeekly:
+- name: Sport
+  due: 2
+  idLabels:
+  - reoccuring
+createMonthly: []
+createYearly: []
+orderLists: true
+relocateCards: true
