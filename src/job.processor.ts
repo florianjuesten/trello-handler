@@ -46,7 +46,7 @@ class JobProcessor {
 
   private async relocateCardsInList(listId: string) {
     const cards = await trello.getCardsOfList(listId)
-    if (!cards) return
+    if (!cards || !cards.forEach) return
     cards.forEach((card) => this.relocateCard(card))
   }
 
@@ -103,6 +103,7 @@ class JobProcessor {
 
     if (searchResult.cards && searchResult.cards.length > 0) {
       const createCardDate = getSpecificDay(createCardJob.due, createCardJob.hour, createCardJob.minute, createCardJob.month)
+    if (!searchResult || !searchResult.cards || !searchResult.cards.forEach) return false
       searchResult.cards.forEach((searchResultCard: any) => {
         try {
           const searchCardDate = new Date(searchResultCard.due)
