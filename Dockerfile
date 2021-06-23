@@ -1,7 +1,7 @@
 FROM node:10
 
 COPY package*.json ./
-COPY trello-jobs.json ./
+COPY trello-jobs.yml ./
 
 RUN npm install\
         && npm install typescript@latest -g
