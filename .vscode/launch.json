@@ -16,6 +16,20 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
+        },
+        {
+          "console": "integratedTerminal",
+          "internalConsoleOptions": "neverOpen",
+          "name": "createCard",
+          "program": "${workspaceFolder}/createCard.js",
+          "request": "launch",
+          "args": ["test"],
+          "restart": true,
+          "runtimeExecutable": "nodemon",
+          "skipFiles": [
+            "<node_internals>/**"
+          ],
+          "type": "pwa-node"
         }
     ]
 }
