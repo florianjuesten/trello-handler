@@ -2,7 +2,7 @@
   "name": "trello-automator",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/florianjuesten/trello-automator.git",
+  "repository": "https://github.com/florianbellmann/trello-automator.git",
   "author": "Florian Jüsten <flojuesten@gmail.com>",
   "license": "MIT",
   "description": "job to automate trello workflows",
