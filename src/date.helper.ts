@@ -42,7 +42,7 @@ export const getWeekNumber = (date: Date) => {
   // Make Sunday's day number 7
   date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7))
   // Get first day of year
-  var yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1))
+  const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1))
   // Calculate full weeks to nearest Thursday
   var weekNo = Math.ceil(((((date as unknown) as number) - ((yearStart as unknown) as number)) / 86400000 + 1) / 7)
   // Return array of year and week number
